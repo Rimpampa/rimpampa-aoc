@@ -1,0 +1,7 @@
+[package]
+name = "ed2021"
+version = "0.1.0"
+edition = "2021"
+authors = ["Rimpampa <riccardo.ripanti01@gmail.com>"]
+
+[dependencies]
