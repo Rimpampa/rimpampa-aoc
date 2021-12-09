@@ -1,13 +1,8 @@
 use std::{
     cmp::Ordering::{Equal, Greater, Less},
     fmt::Debug,
-    iter::successors,
     str::FromStr,
 };
-
-macro_rules! impl_iter {
-    ($ty:ty) => { impl Iterator<Item = $ty> + Clone };
-}
 
 const INPUT: &str = include_str!("../../assets/p5.in");
 
@@ -25,12 +20,6 @@ impl FromStr for Point {
 
 #[derive(Clone, Copy)]
 struct Segment(Point, Point, bool);
-
-impl Segment {
-    fn intersect(&self, other: Segment) -> impl_iter!(Point) {
-        self.filter(move |&a| other.clone().any(|b| a == b))
-    }
-}
 
 impl Iterator for Segment {
     type Item = Point;
@@ -66,25 +55,6 @@ impl FromStr for Segment {
         let (a, b) = s.split_once(" -> ").ok_or(())?;
         Ok(Self(a.parse().or(Err(()))?, b.parse().or(Err(()))?, false))
     }
-}
-
-#[allow(unused)]
-fn solve_1_1st(input: &str) -> usize {
-    let segments: Vec<Segment> = input
-        .lines()
-        .map(Segment::from_str)
-        .map(Result::unwrap)
-        .filter(|Segment(a, b, _)| a.0 == b.0 || a.1 == b.1)
-        .collect();
-    let mut ints = Vec::new();
-
-    successors(segments.split_first(), |v| v.1.split_first())
-        .flat_map(|v| v.1.iter().flat_map(|&s| v.0.intersect(s)))
-        .for_each(|p| match ints.binary_search(&p) {
-            Err(i) => ints.insert(i, p),
-            Ok(_) => (),
-        });
-    ints.len()
 }
 
 fn solve(input: &str, filter: impl Fn(&Segment) -> bool) -> usize {
