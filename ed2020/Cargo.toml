@@ -1,10 +1,7 @@
 [package]
-name = "aoc"
+name = "ed2020"
 version = "0.1.0"
 edition = "2021"
 authors = ["Rimpampa <riccardo.ripanti01@gmail.com>"]
-
-[workspace]
-members = ["ed2021", "ed2020"]
 
 [dependencies]
